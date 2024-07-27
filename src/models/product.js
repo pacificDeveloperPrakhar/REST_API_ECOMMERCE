@@ -20,14 +20,14 @@ const productSchema = new Schema({
   },
   sizes: {
     type: [String],
-    enum: ['S','XL','XXL','L'] // Removed unnecessary empty enum array
+    enum: ['S','XL','XXL','L'] 
   },
   colors: {
-    type: mongoose.Schema.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Color",
   },
   distributor: {
-    type: mongoose.Schema.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'Profile',
     required: [true, 'Every product needs to have a registered distributor']
   },
