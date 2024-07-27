@@ -3,8 +3,8 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" }); // Load environment variables from config.env file
 
 const http = require("http");
-const geturl = require("./utils/get_connection_url.js");
-const app = require("./app.js");
+const geturl = require("./src/utils/get_connection_url.js");
+const app = require("./src/app.js");
 const server = http.createServer(app); // Create an HTTP server using the Express app
 
 const host = process.env.host; // Host for the server from environment variables
@@ -17,7 +17,7 @@ const {
   colorReset, 
   colorPurple, 
   colorFgGreen 
-} = require("./color_codes.js"); // Import color codes for console logs
+} = require("./src/utils/color_codes.js"); // Import color codes for console logs
 
 console.log(`${colorFgCyan}mode:${colorReset} ${colorBright}${colorPurple}${process.env.mode}${colorReset}`);
 
