@@ -37,7 +37,7 @@ const UserSchema = new Schema(
     modification: {
       modifiedAt: {
         type: Date,
-        default: Date.now, // Fixed from Date.now() to Date.now
+        default: Date.now, 
       },
       logs: [
         {
@@ -62,7 +62,7 @@ const UserSchema = new Schema(
       verification_factor: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "VerificationFactor",
-        default: null, // Fixed from defalult to default
+        default: null, 
       },
     },
     // Role details
@@ -94,9 +94,17 @@ const UserSchema = new Schema(
         type: [String],
       },
     },
+    address:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Location'
+    },
+    reviews:{
+        type:[mongoose.Schema.Types.ObjectId],
+        ref:"Review"
+    }
   },
   {
-    timestamps: true, // Fixed from timestamp to timestamps
+    timestamps: true, 
     toJSON: { virtuals: true }, // Include virtuals when converting to JSON
   }
 );
