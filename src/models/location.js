@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose=require("mongoose");
 const Schema = mongoose.Schema;
 
 const LocationSchema = new Schema(
@@ -56,4 +56,4 @@ const LocationSchema = new Schema(
 LocationSchema.index({ location: '2dsphere' });
 
 // Create and export the Location model
-module.exports = mongoose.model('Location', LocationSchema);
+module.exports=mongoose.model('Location', LocationSchema);

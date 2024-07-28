@@ -3,7 +3,8 @@ const { Schema, model, default: mongoose } = require("mongoose");
 const productSchema = new Schema({
   name: {
     type: String,
-    required: [true, 'Product name is required']
+    required: [true, 'Product name is required'],
+    unique:true
   },
   description: {
     type: String,
@@ -29,12 +30,12 @@ const productSchema = new Schema({
   distributor: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Profile',
-    required: [true, 'Every product needs to have a registered distributor']
+    required: [false, 'Every product needs to have a registered distributor']//remember to turn this flag to true after the creating of the user mvc 
   },
   images: {
     iconURL: {
       type: String,
-      required: [true, 'Product must have an icon image to preview']
+      required: [false, 'Product must have an icon image to preview']
     },
     previewsURLs: {
       type: [String]
@@ -62,8 +63,29 @@ const productSchema = new Schema({
   },
   reviews: {
     type: [mongoose.Schema.Types.ObjectId],
-    ref: "Review"
-  }
+    ref: "Review",
+    default:[]
+  },
+    // Modification details
+    modification: {
+        modifiedAt: {
+          type: Date,
+          default: Date.now, 
+        },
+        logs: [
+          {
+            modifiedAt: {
+              type: Date,
+              default: Date.now, // Default to current date
+            },
+            description: {
+              type: String,
+              required: [true, 'missing the description'], 
+              default :"___no description added___"// Custom error message if not provided
+            },
+          },
+        ],
+      },
 }, {
   timestamps: true,
   toJSON: { virtuals: true }

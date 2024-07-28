@@ -1,7 +1,7 @@
 //Review Schema
-import mongoose from "mongoose";
+;
+const mongoose=require("mongoose")
 const Schema = mongoose.Schema;
-
 const ReviewSchema = new Schema(
   {
     user: {
@@ -32,4 +32,4 @@ const ReviewSchema = new Schema(
 
 const Review = mongoose.model("Review", ReviewSchema);
 
-export default Review;
+module.exports = Review;

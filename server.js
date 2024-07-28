@@ -9,7 +9,6 @@ const server = http.createServer(app); // Create an HTTP server using the Expres
 
 const host = process.env.host; // Host for the server from environment variables
 const port = process.env.port; // Port for the server from environment variables
-
 const { 
   colorBright, 
   colorFgCyan, 
@@ -37,7 +36,7 @@ process.on("uncaughtException", (err) => {
   });
 });
 
-const url = geturl("test", process.env.user, process.env.password); // Get MongoDB connection URL
+const url = geturl(process.env.databasename, process.env.user, process.env.password); // Get MongoDB connection URL
 
 mongoose.connect(url).catch((err) => console.log("error encountered")); // Connect to MongoDB
 const db = mongoose.connection;
@@ -45,6 +44,7 @@ const db = mongoose.connection;
 db.once("open", () => {
   const portused = db.port; // Port used for MongoDB connection
   console.log("\033[104mPort used for mongoDB connection:\033[0m", portused);
+  const endpoint=require("./endpoints.js")
 });
 
 db.on("error", (err) => {
@@ -58,7 +58,9 @@ server.listen(port, host, (err) => {
   } else {
     console.log(
       `${colorBright}${colorFgGreen}Server is listening on ${colorFgCyan}http://${host}:${port}${colorReset}`
+      
     );
+        
   }
 });
 
@@ -87,3 +89,4 @@ process.on('SIGTERM', () => {
     });
   });
 });
+

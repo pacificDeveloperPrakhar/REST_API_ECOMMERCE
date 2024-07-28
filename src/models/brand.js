@@ -1,5 +1,5 @@
 //Brand schema
-import mongoose from "mongoose";
+const mongoose=require("mongoose");
 const Schema = mongoose.Schema;
 
 const BrandSchema = new Schema(
@@ -25,4 +25,4 @@ const BrandSchema = new Schema(
 
 const Brand = mongoose.model("Brand", BrandSchema);
 
-export default Brand;
+module.exports=Brand;
