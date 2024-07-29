@@ -1,15 +1,22 @@
 const mongoose = require('mongoose');
 const Product = require('../models/product.js');
 const catchAsync = require('../utils/catchAsync.js');
-
+const APIFeatures=require('../utils/APIFeatures.js')
 // Controller to get all products
 exports.getAllProducts = catchAsync(async function (req, res, next) {
-  const products = await Product.find();
+   const features = new APIFeatures(Product.find(), (req.query))
+     features.filter()
+     .sort()
+     .limitFields()
+     .paginate();
+   // const doc = await features.query.explain();
+   const doc = await features.query;
+
   res.status(200).json({
     status: 'success',
-    results: products.length,
+    results: doc.length,
     data: {
-      products
+      doc
     }
   });
 });

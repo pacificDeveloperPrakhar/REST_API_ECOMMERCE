@@ -114,3 +114,4 @@ process.on("uncaughtException", (err) => {
     console.log("\x1b[33m%s\x1b[0m", "Usage: node script --import/-i||--delete/-d collection_name file_path_of_data_you_want_to_upload"); // Yellow color for usage instructions
     process.exit();
 });
+// node ./script.js --delete product
