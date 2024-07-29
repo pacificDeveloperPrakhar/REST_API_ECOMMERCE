@@ -1,4 +1,7 @@
 const mongoose = require("mongoose");
+const {isEmail}=require("validator")
+const appError=require("../utils/appErrors")
+const bcrypt=require("bcrypt")
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema(
@@ -17,16 +20,28 @@ const UserSchema = new Schema(
       type: String,
       required: [true, 'missing the email address'], // Custom error message if not provided
       unique: true,   // Ensures email is unique across all users
+      validate:{
+        validator:function(value){
+          return isEmail(value)
+        }
+      }
     },
     // User's password
     password: {
       type: String,
       required: [true, 'missing the password'], // Custom error message if not provided
+      minLength:[6,'password should be minimum of 6 length long']
     },
     // Confirmation of the password
     confirmPassword: {
       type: String,
       required: [true, 'missing the password confirmation'], // Custom error message if not provided
+      validate:{
+        validator:function(value){
+          return value==this.password
+        },
+        message:"confirmation password should be same as the above password"
+      }
     },
     // Date when the user created the profile
     createdAt: {
@@ -108,6 +123,34 @@ const UserSchema = new Schema(
     toJSON: { virtuals: true }, // Include virtuals when converting to JSON
   }
 );
+//
+//hashing the password
+//
+//
+UserSchema.pre('save', async function(next) {
+  // Hash password if it has been modified or if it's a new document
+  console.log("log--1")
+  if (this.isModified('password') || this.isNew) {
+    console.log("log--2")
+    try {
+      const salt = await bcrypt.genSalt(12); // Generate a salt with 12 rounds
+      this.password = await bcrypt.hash(this.password, salt); // Hash the password
+      this.confirmPassword = undefined; // Optionally remove the confirmPassword field
+      next();
+    } catch (err) {
+      error=new appError("unable to hash the password",500)
+      next(error); // Pass any errors to the next middleware
+    }
+  } else {
+    next(); // If password has not been modified, continue to save
+  }
+});
 
+// Method to compare passwords
+UserSchema.methods.comparePassword = async function(candidatePassword) {
+  return await bcrypt.compare(candidatePassword, this.password);
+};
+//
+//
 // Create and export the User model
 module.exports = mongoose.model('Profile', UserSchema);

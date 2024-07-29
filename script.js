@@ -88,7 +88,10 @@ switch (process.argv?.[2]) {
 async function importData() {
     try {
         const data = JSON.parse(fs.readFileSync(file_path, 'utf-8'));
-        await collection.insertMany(data, { validateBeforeSave: false });
+        
+        // Using create instead of insertMany
+        await collection.create(data);
+        
         console.log("\x1b[32m%s\x1b[0m", "Data imported successfully!"); // Green color for successful import
         process.exit();
     } catch (error) {
@@ -114,4 +117,3 @@ process.on("uncaughtException", (err) => {
     console.log("\x1b[33m%s\x1b[0m", "Usage: node script --import/-i||--delete/-d collection_name file_path_of_data_you_want_to_upload"); // Yellow color for usage instructions
     process.exit();
 });
-// node ./script.js --delete product
