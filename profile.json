@@ -1,0 +1,133 @@
+[
+    {
+      "first_name": "John",
+      "email": "john.doe1@example.com",
+      "password": "hashedpassword123",
+      "confirmPassword": "hashedpassword123",
+      "createdAt": "2023-07-29T10:00:00Z",
+      "verification_details": {
+        "isVerified": false
+      },
+      "role_details": {
+        "role": ["consumer"]
+      }
+    },
+    {
+      "first_name": "Jane",
+      "email": "jane.doe2@example.com",
+      "password": "hashedpassword456",
+      "confirmPassword": "hashedpassword456",
+      "createdAt": "2023-07-29T11:00:00Z",
+      "verification_details": {
+        "isVerified": false
+      },
+      "role_details": {
+        "role": ["consumer"]
+      }
+    },
+    {
+      "first_name": "Alice",
+      "email": "alice.doe3@example.com",
+      "password": "hashedpassword789",
+      "confirmPassword": "hashedpassword789",
+      "createdAt": "2023-07-29T12:00:00Z",
+      "verification_details": {
+        "isVerified": false
+      },
+      "role_details": {
+        "role": ["consumer"]
+      }
+    },
+    {
+      "first_name": "Bob",
+      "email": "bob.doe4@example.com",
+      "password": "hashedpassword101",
+      "confirmPassword": "hashedpassword101",
+      "createdAt": "2023-07-29T13:00:00Z",
+      "verification_details": {
+        "isVerified": false
+      },
+      "role_details": {
+        "role": ["consumer"]
+      }
+    },
+    {
+      "first_name": "Charlie",
+      "email": "charlie.doe5@example.com",
+      "password": "hashedpassword102",
+      "confirmPassword": "hashedpassword102",
+      "createdAt": "2023-07-29T14:00:00Z",
+      "verification_details": {
+        "isVerified": false
+      },
+      "role_details": {
+        "role": ["consumer"]
+      }
+    },
+    {
+      "first_name": "Dave",
+      "email": "dave.doe6@example.com",
+      "password": "hashedpassword103",
+      "confirmPassword": "hashedpassword103",
+      "createdAt": "2023-07-29T15:00:00Z",
+      "verification_details": {
+        "isVerified": false
+      },
+      "role_details": {
+        "role": ["consumer"]
+      }
+    },
+    {
+      "first_name": "Eve",
+      "email": "eve.doe7@example.com",
+      "password": "hashedpassword104",
+      "confirmPassword": "hashedpassword104",
+      "createdAt": "2023-07-29T16:00:00Z",
+      "verification_details": {
+        "isVerified": false
+      },
+      "role_details": {
+        "role": ["consumer"]
+      }
+    },
+    {
+      "first_name": "Frank",
+      "email": "frank.doe8@example.com",
+      "password": "hashedpassword105",
+      "confirmPassword": "hashedpassword105",
+      "createdAt": "2023-07-29T17:00:00Z",
+      "verification_details": {
+        "isVerified": false
+      },
+      "role_details": {
+        "role": ["consumer"]
+      }
+    },
+    {
+      "first_name": "Grace",
+      "email": "grace.doe9@example.com",
+      "password": "hashedpassword106",
+      "confirmPassword": "hashedpassword106",
+      "createdAt": "2023-07-29T18:00:00Z",
+      "verification_details": {
+        "isVerified": false
+      },
+      "role_details": {
+        "role": ["consumer"]
+      }
+    },
+    {
+      "first_name": "Hank",
+      "email": "hank.doe10@example.com",
+      "password": "hashedpassword107",
+      "confirmPassword": "hashedpassword107",
+      "createdAt": "2023-07-29T19:00:00Z",
+      "verification_details": {
+        "isVerified": false
+      },
+      "role_details": {
+        "role": ["consumer"]
+      }
+    }
+  ]
+  

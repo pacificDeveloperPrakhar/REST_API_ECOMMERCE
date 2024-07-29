@@ -47,7 +47,7 @@ const UserSchema = new Schema(
           },
           description: {
             type: String,
-            required: [true, 'missing the description'], // Custom error message if not provided
+             
           },
         },
       ],

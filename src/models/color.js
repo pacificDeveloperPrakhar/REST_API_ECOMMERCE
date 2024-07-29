@@ -10,6 +10,10 @@ const ColorSchema = new Schema(
     },
   product:{
     type:[mongoose.Schema.Types.ObjectId]
+  },
+  hexcode:{
+    type:String,
+    default:'#000000'
   }
   },
   { timestamps: true }
