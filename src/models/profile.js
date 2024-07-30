@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const {isEmail}=require("validator")
 const appError=require("../utils/appErrors")
 const bcrypt=require("bcrypt")
-
+const crypto=require("crypto")
 const UserSchema = new mongoose.Schema(
   {
     // User's first name
@@ -49,6 +49,13 @@ const UserSchema = new mongoose.Schema(
       required: [true, "missing the date parameter at which the user created the profile"], // Custom error message if not provided
     },
     // Modification details
+    passwordResetToken:{
+      type:String,
+      select:false
+    },
+    passwordResetExpires:{
+      type:Date
+    },
     modification: {
       modifiedAt: {
         type: Date,
@@ -148,6 +155,23 @@ UserSchema.pre('save', async function(next) {
 UserSchema.methods.comparePassword = async function(candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
+//
+//now creating a token or otp
+//
+UserSchema.methods.createResetPasswordToken=async function(){
+  const resetToken = crypto.randomBytes(32).toString('hex');
+
+  this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+
+  // console.log({ resetToken }, this.passwordResetToken);
+
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+
+  return resetToken;
+}
 //
 //
 // Create and export the User model

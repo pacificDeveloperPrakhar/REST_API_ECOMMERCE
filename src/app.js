@@ -2,6 +2,7 @@ const Express = require("express");
 const productRoute=require('./routes/productRoute')
 const profileRoute=require("./routes/profileRoute.js")
 const cookie_parser=require("cookie-parser")
+const developmentRoute=require("./routes/developmentRoute.js")
 const appError=require("./utils/appErrors")
 const {colorRed,colorReset}=require("./utils/color_codes")
 const app = Express();
@@ -11,6 +12,7 @@ app.use('',(req,res,next)=>{
   console.log(req.query)
   next()
 })
+app.use('/api/development',developmentRoute)
 app.use('/api/v1/profiles',profileRoute);
 app.use('/api/v1/products',productRoute);
 app.use((err, req, res, next) => {
