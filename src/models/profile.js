@@ -2,9 +2,8 @@ const mongoose = require("mongoose");
 const {isEmail}=require("validator")
 const appError=require("../utils/appErrors")
 const bcrypt=require("bcrypt")
-const Schema = mongoose.Schema;
 
-const UserSchema = new Schema(
+const UserSchema = new mongoose.Schema(
   {
     // User's first name
     first_name: {
@@ -46,6 +45,7 @@ const UserSchema = new Schema(
     // Date when the user created the profile
     createdAt: {
       type: Date,
+      default:Date.now,
       required: [true, "missing the date parameter at which the user created the profile"], // Custom error message if not provided
     },
     // Modification details
@@ -129,9 +129,7 @@ const UserSchema = new Schema(
 //
 UserSchema.pre('save', async function(next) {
   // Hash password if it has been modified or if it's a new document
-  console.log("log--1")
   if (this.isModified('password') || this.isNew) {
-    console.log("log--2")
     try {
       const salt = await bcrypt.genSalt(12); // Generate a salt with 12 rounds
       this.password = await bcrypt.hash(this.password, salt); // Hash the password
@@ -153,4 +151,5 @@ UserSchema.methods.comparePassword = async function(candidatePassword) {
 //
 //
 // Create and export the User model
-module.exports = mongoose.model('Profile', UserSchema);
+const profiles =mongoose.models.Profile || mongoose.model('Profile', UserSchema);
+module.exports=profiles

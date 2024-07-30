@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Profile = require('../models/Profile'); 
+const Profile = require('../models/profile'); 
 const catchAsync = require('../utils/catchAsync');
 const APIFeatures = require('../utils/APIFeatures');
 
