@@ -1,6 +1,8 @@
 const profiles = require("../models/profile");
+const User = require("../models/profile");
 const jwt = require("jsonwebtoken");
 const appError=require("../utils/appErrors")
+const AppError=require("../utils/appErrors")
 const catchAsync = require("../utils/catchAsync");
 
 const privateKey = process.env.SECRET_KEY
@@ -136,5 +138,54 @@ exports.authenticateWithToken=catchAsync(async function(req,res,next){
     console.log(`password forget has been acessed :${token}`)
     await profileDoc.save({ validateBeforeSave: false });
     //send the token using email or anything specified
+    req.body.from=process.env.gmail||req.body.from
+    req.body.text=`verification otp has been sent to ${req.body.to},your otp is :${token}`
+    req.body.subject=`verification token:${token}`
+    req.body.to=email
+    next()
 
 })
+
+// resetting password controller
+exports.resetPassword = catchAsync(async (req, res, next) => {
+  const { email, token, newPassword, confirmPassword } = req.body;
+
+  // Check if all required fields are provided
+  if (!email || !token || !newPassword || !confirmPassword) {
+    return next(new AppError('Please provide email, token, new password, and confirm password', 400));
+  }
+
+  // Check if newPassword and confirmPassword match
+  if (newPassword !== confirmPassword) {
+    return next(new AppError('New password and confirm password do not match', 400));
+  }
+
+  // Find the user by email
+  const user = await User.findOne({ email }).select('+passwordResetToken +passwordResetExpires');
+
+  // Check if user exists
+  if (!user) {
+    return next(new AppError('There is no user with that email', 404));
+  }
+
+  // Check if the token is valid and not expired
+  const isTokenValid = user.compareResetToken(token);
+  const isTokenExpired = user.passwordResetExpires < Date.now();
+
+  if (!isTokenValid || isTokenExpired) {
+    return next(new AppError('Token is invalid or has expired', 400));
+  }
+
+  // Token is valid and not expired, proceed with updating the password
+  user.password = newPassword;
+  user.confirmPassword=confirmPassword
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
+  await user.save();
+
+  res.status(200).json({
+    status: 'success',
+    message: 'Password has been reset successfully'
+  });
+});
+

@@ -173,6 +173,12 @@ UserSchema.methods.createResetPasswordToken=async function(){
   return resetToken;
 }
 //
+// comparing the reset passwords
+UserSchema.methods.compareResetToken = function(providedToken) {
+  const hashedToken = crypto.createHash('sha256').update(providedToken).digest('hex');
+  return this.passwordResetToken === hashedToken;
+};
+//
 //
 // Create and export the User model
 const profiles =mongoose.models.Profile || mongoose.model('Profile', UserSchema);
