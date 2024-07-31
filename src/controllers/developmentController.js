@@ -5,7 +5,6 @@ const APIFeatures=require('../utils/APIFeatures.js')
 const appError=require("../utils/appErrors")
 const AppError=require("../utils/appErrors")
 const nodemailer=require("nodemailer")
-const accountSid = 'AC0078078e84cd495b7f885c66c15218eb';
 const authToken = process.env.twilio_auth
 const twilio=require("twilio")
 exports.sendWhatsappMssg = catchAsync(async (req, res, next) => {
