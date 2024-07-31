@@ -89,7 +89,7 @@ exports.authenticateRequest = catchAsync(async (req, res, next) => {
         token = authHeader.split(' ')[1];
     } else {
         // Check for token in cookies if not found in the header
-        token = req.cookies.authToken || null;
+        token = req.cookies?.authToken || null;
     }
     
     if (!token) {
@@ -189,3 +189,6 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.createSession=catchAsync(async function(req,res,next){
+  req.session.user="checked"
+})

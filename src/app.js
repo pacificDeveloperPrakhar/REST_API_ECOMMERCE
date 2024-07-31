@@ -3,15 +3,46 @@ const productRoute=require('./routes/productRoute')
 const profileRoute=require("./routes/profileRoute.js")
 const cookie_parser=require("cookie-parser")
 const developmentRoute=require("./routes/developmentRoute.js")
+const utils=require("util")
 const appError=require("./utils/appErrors")
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const {colorRed,colorReset}=require("./utils/color_codes")
 const app = Express();
-app.use(cookie_parser())
+
+//
+//here is the session middleware
+//
+// Set up session middleware with MongoDB store
+app.use(session({
+  secret: process.env.SESSION_SECRET, // Replace with a strong secret key
+  resave: true,                      // Do not resave session if unmodified
+  saveUninitialized: true,           // Do not create session until something is stored
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGO_URI,  // MongoDB connection URL
+    collectionName: 'sessions',        // Custom collection name
+    ttl: 14 * 24 * 60 * 60,           // Session expiration time in seconds (14 days)
+    autoRemove: 'native'              // Automatically remove expired sessions
+  }),
+  cookie: {
+    secure: false,                    // Set to true if using HTTPS
+    maxAge: 14 * 24 * 60 * 60 * 1000  // Cookie expiration time (14 days)
+  }
+}));
+
+//
+// demonstrating the session creation
+app.use((req,res,next)=>{
+  req.session.visitCount++;
+  utils.promisify(req.session.save).then(()=>next()).catch(next(err))
+})
+//
 app.use(Express.json({ limit: "30kb" }));
 app.use('',(req,res,next)=>{
   console.log(req.query)
   next()
 })
+if(process.env.mode=='development')
 app.use('/api/development',developmentRoute)
 app.use('/api/v1/profiles',profileRoute);
 app.use('/api/v1/products',productRoute);

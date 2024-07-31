@@ -8,5 +8,5 @@ router.route("/authenticate").get(authenticateRequest,(req,res)=>{
     })
 })
 router.route("/:id").get(getProductById).put(updateProduct).delete(deleteProduct)
-router.route("/").get(authenticateRequest,getAllProducts).post(createProduct)
+router.route("/").get(getAllProducts).post(createProduct)
 module.exports=router
