@@ -17,16 +17,17 @@ exports.signup = catchAsync(async function (req, res, next) {
     const profile = await profiles.create({ first_name, email, password, confirmPassword });
   
     // Set the token as a cookie
-    res.cookie('jwt', token, {
+      res.cookie('jwt', token, {
       httpOnly: false, // Cookie is not accessible via JavaScript
       secure: false, // Set to true in production (HTTPS only)
       sameSite: 'strict', // CSRF protection
       maxAge: 30 * 24 * 60 * 60 * 1000, // Cookie expiration (30 days)
     });
-  
+    
     // Set the token in the Authorization header
     res.setHeader('Authorization', `Bearer ${token}`);
-  
+    // token has been stored to the session storage
+    req.session.token=token
     // Respond with the profile data
     res.status(201).json({
       status: 'success',
@@ -43,18 +44,18 @@ exports.login = catchAsync(async function (req, res, next) {
     // Check if the email and password are provided
     if (!email) return next(new appError("Email parameter is missing", 400));
     if (!password) return next(new appError("Password parameter is missing", 400));
-  
+    
     // Find the user profile by email
     const profileDoc = await profiles.findOne({ email });
-  
+    
     // Check if the profile exists and the password is correct
     if (!profileDoc || !(await profileDoc.comparePassword(password))) {
       return next(new appError('Invalid email or password', 401));
     }
-  
+    
     // Generate JWT token
     const token = jwt.sign({ email }, privateKey);
-  
+    
     // Set the token as a cookie
     res.cookie('jwt', token, {
       httpOnly: false, // Cookie is not accessible via JavaScript
@@ -62,10 +63,11 @@ exports.login = catchAsync(async function (req, res, next) {
       sameSite: 'strict', // CSRF protection
       maxAge: 30 * 24 * 60 * 60 * 1000, // Cookie expiration (30 days)
     });
-  
+    
     // Set the token in the Authorization header
     res.setHeader('Authorization', `Bearer ${token}`);
-  
+    // token has been stored to the session store
+    req.session.token=token
     // Respond with the profile data
     res.status(200).json({
       status: 'success',
@@ -75,58 +77,49 @@ exports.login = catchAsync(async function (req, res, next) {
     });
   });
   
-//to authenticate the request comming
-
-exports.authenticateRequest = catchAsync(async (req, res, next) => {
-    console.log("log")
+  //to authenticate the request comming
+  
+  exports.authenticateRequest = catchAsync(async (req, res, next) => {
     // Step 1: Check for token in the Authorization header
     let token = null;
     const authHeader = req.headers['authorization'];
     
     if (authHeader && authHeader.startsWith('Bearer ')) {
-        // Extract the token from the header
-        console.log("log")
-        token = authHeader.split(' ')[1];
+      // Extract the token from the header
+      token = authHeader.split(' ')[1];
     } else {
-        // Check for token in cookies if not found in the header
-        token = req.cookies?.authToken || null;
+      // Check for token in cookies if not found in the header
+      token = req.cookies?.authToken || null;
     }
     
+    // Check for token in the session if not found in the header or cookies
+    if (!token && req.session.token) {
+      token = req.session.token;
+    }
+  
+    // If no token is found, return an error
     if (!token) {
-        return next(new appError("No token was found", 403));
+      return next(new appError("No token was found", 403));
     }
     
     // Step 2: Decode and verify the token
     let decodedToken;
     try {
-        console.log("log")
-        decodedToken = jwt.decode(token);
-        if (!decodedToken) {
-            return next(new appError("Failed to decode token", 401));
-        }
-  } catch (err) {
-    return next(new appError("Invalid token format", 401));
-  }
-
-  const { email } = decodedToken;
+      decodedToken = jwt.verify(token, privateKey); // Use jwt.verify to verify the token
+      if (!decodedToken) {
+        return next(new appError("Failed to decode token", 401));
+      }
+    } catch (err) {
+      return next(new appError("Invalid token format", 401));
+    }
   
-  const profileDoc = await profiles.findOne({ email });
-  if (!profileDoc) {
-    return next(new appError("The given profile does not exist or has been removed following the issuance of the token", 401));
-  }
-
-  try {
-    jwt.verify(token, privateKey);
-  } catch (err) {
-    return next(new appError("Token is invalid, issue a new one", 401));
-  }
-
-  // Attach the token to the request object
-  req.token = token;
+    // Attach decoded token to the request object for further use
+    req.user = decodedToken;
   
-  // Proceed to the next middleware or route handler
-  next();
-});
+    // Proceed to the next middleware or route handler
+    next();
+  });
+  
 
 // controller to authenticate if the user navigates to the forget password
 exports.authenticateWithToken=catchAsync(async function(req,res,next){
@@ -188,7 +181,3 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     message: 'Password has been reset successfully'
   });
 });
-
-exports.createSession=catchAsync(async function(req,res,next){
-  req.session.user="checked"
-})

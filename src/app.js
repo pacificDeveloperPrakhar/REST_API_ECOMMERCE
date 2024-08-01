@@ -33,8 +33,17 @@ app.use(session({
 //
 // demonstrating the session creation
 app.use((req,res,next)=>{
-  req.session.visitCount++;
-  utils.promisify(req.session.save).then(()=>next()).catch(next(err))
+  
+  if(req.session.visitCount)
+    req.session.visitCount++;
+  else
+    req.session.visitCount=1
+  req.session.save((err) => {
+    if (err) {
+      next(err)
+    }
+    next()
+})
 })
 //
 app.use(Express.json({ limit: "30kb" }));
@@ -42,8 +51,7 @@ app.use('',(req,res,next)=>{
   console.log(req.query)
   next()
 })
-if(process.env.mode=='development')
-app.use('/api/development',developmentRoute)
+app.use('/api/v1/develop',developmentRoute)
 app.use('/api/v1/profiles',profileRoute);
 app.use('/api/v1/products',productRoute);
 app.use((err, req, res, next) => {
