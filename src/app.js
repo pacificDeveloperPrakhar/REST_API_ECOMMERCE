@@ -4,13 +4,14 @@ const profileRoute=require("./routes/profileRoute.js")
 const cookie_parser=require("cookie-parser")
 const developmentRoute=require("./routes/developmentRoute.js")
 const utils=require("util")
+const passport = require('passport');
 const appError=require("./utils/appErrors")
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const local_strategy=require("./controllers/developmentAuthControllers")
 const {colorRed,colorReset}=require("./utils/color_codes")
 const app = Express();
 
-//
 //here is the session middleware
 //
 // Set up session middleware with MongoDB store
@@ -29,6 +30,13 @@ app.use(session({
     maxAge: 14 * 24 * 60 * 60 * 1000  // Cookie expiration time (14 days)
   }
 }));
+//
+//
+//initializing passport
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(local_strategy)
+//
 
 //
 // demonstrating the session creation

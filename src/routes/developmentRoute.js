@@ -1,5 +1,6 @@
 const express=require("express")
 const {sendWhatsappMssg,sendSMS,sendMail,sendMailt}=require("../controllers/communicationController")
+const passport = require("passport")
 const router=express.Router()
 router.route('/sms').get(sendSMS)
 router.route('/wassup').get(sendWhatsappMssg)
@@ -53,9 +54,9 @@ router.route('/login').get((req, res, next) => {
         </style>
       </head>
       <body>
-        <form action="http://127.0.0.1:1234/api/v1/login" method="POST">
+        <form action="http://127.0.0.1:1234/api/v1/develop/login_auth" method="POST">
           <h2>Login</h2>
-          <input type="text" name="username" placeholder="Username" required />
+          <input type="text" name="email" placeholder="Username" required />
           <input type="password" name="password" placeholder="Password" required />
           <button type="submit">Login</button>
         </form>
@@ -65,4 +66,7 @@ router.route('/login').get((req, res, next) => {
     
     res.send(html);
   });
+  router.route('/login_auth').post(passport.authenticate('local'),(req,res)=>{
+    res.send('done authenticating using passport local')
+  })
 module.exports=router
