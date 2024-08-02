@@ -34,4 +34,5 @@ cd <project-directory>
 url_routes
 to authorize with google
 http://127.0.0.1:1234/api/v1/profiles/authWithGoogle
+# check the authenticity of the request
 http://127.0.0.1:1234/api/v1/products/authenticate

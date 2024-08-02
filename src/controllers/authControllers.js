@@ -96,7 +96,8 @@ exports.login = catchAsync(async function (req, res, next) {
     if (!token && req.session.token) {
       token = req.session.token;
     }
-    
+    if(req?.session?.passport?.user?.token)
+      token=req.session.passport.user.token
     // If no token is found, return an error
     if (!token) {
       return next(new appError("No token was found", 403));
