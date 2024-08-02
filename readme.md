@@ -31,3 +31,7 @@ Clone the repository and navigate into the project directory:
 ```bash
 git clone <repository-url>
 cd <project-directory>
+url_routes
+to authorize with google
+http://127.0.0.1:1234/api/v1/profiles/authWithGoogle
+http://127.0.0.1:1234/api/v1/products/authenticate

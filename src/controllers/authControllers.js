@@ -96,7 +96,7 @@ exports.login = catchAsync(async function (req, res, next) {
     if (!token && req.session.token) {
       token = req.session.token;
     }
-  
+    
     // If no token is found, return an error
     if (!token) {
       return next(new appError("No token was found", 403));
@@ -112,7 +112,7 @@ exports.login = catchAsync(async function (req, res, next) {
     } catch (err) {
       return next(new appError("Invalid token format", 401));
     }
-  
+    
     // Attach decoded token to the request object for further use
     req.user = decodedToken;
   

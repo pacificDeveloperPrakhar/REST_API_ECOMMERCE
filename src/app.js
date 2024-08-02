@@ -8,8 +8,9 @@ const passport = require('passport');
 const appError=require("./utils/appErrors")
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
-const local_strategy=require("./controllers/developmentAuthControllers")
-const {colorRed,colorReset}=require("./utils/color_codes")
+const {LocalStrategy}=require("./controllers/thirdpartyAuthControllers")
+const {colorRed,colorReset}=require("./utils/color_codes");
+const { GoogleStrategy } = require("./controllers/thirdpartyAuthControllers.js");
 const app = Express();
 
 //here is the session middleware
@@ -35,7 +36,8 @@ app.use(session({
 //initializing passport
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(local_strategy)
+passport.use(LocalStrategy)
+passport.use(GoogleStrategy)
 //
 
 //

@@ -136,6 +136,9 @@ const UserSchema = new mongoose.Schema(
 //
 UserSchema.pre('save', async function(next) {
   // Hash password if it has been modified or if it's a new document
+  if(!this.passwordResetToken)
+    if(this?.verification_details?.isVerified)
+      return next()
   if (this.isModified('password') || this.isNew) {
     try {
       const salt = await bcrypt.genSalt(12); // Generate a salt with 12 rounds
