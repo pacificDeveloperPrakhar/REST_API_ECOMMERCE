@@ -59,7 +59,7 @@ callback_google=async (accessToken, refreshToken, profile, done) => {
     }
 
     // Log email and verification status
-    console.log(email, verified);
+    
 
     // Find the profile document by email
     let profileDoc = await profiles.findOne({ email });
@@ -70,7 +70,6 @@ callback_google=async (accessToken, refreshToken, profile, done) => {
         verification_details: { isVerified: verified },
       });
       profileDoc = await profileDoc.save({ validateBeforeSave: false });
-      console.log('Saved profile document:', profileDoc);
     }
 
     // Update the profile document with the latest information

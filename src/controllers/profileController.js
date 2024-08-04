@@ -101,3 +101,25 @@ exports.deleteProfile = catchAsync(async (req, res) => {
     message: 'Profile deleted successfully'
   });
 });
+
+exports.updateTheCurrentlySessionedProfile=catchAsync(async function(req,res,next){
+  //first get the user id note that i have not extracted the profile directly
+  const userId=req?.user?._id||req.session.userId;
+  // now create an object named images and store the images inside of it
+  const images={
+    imageURL:req?.fileObjs?.map(({url})=>{
+      return url
+    })
+  }
+  const profile=await Profile.findByIdAndUpdate(userId,{
+    images
+  },{
+    new:true
+  })
+  res.status(201).json({
+    status:"updated",
+    data:{
+      profile 
+    }
+  })
+})

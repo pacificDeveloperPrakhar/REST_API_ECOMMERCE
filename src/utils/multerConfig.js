@@ -4,7 +4,7 @@ const path=require("path")
 // storing the file logic
 const storage=multer.diskStorage({
     destination:(req,file,cb)=>{
-        return cb(null,"public/profiles")
+        return cb(null,`public/${"dumpPics"||req.folder}`)
     },
     filename:(req,file,cb)=>{
         
@@ -65,7 +65,7 @@ const storageCloudinary = new CloudinaryStorage({
 exports.storeToCloudinary=catchAsync(async function(req,res,next){
   const uploadToCloudinary=(filePath)=>{
     return new Promise((resolve,reject)=>{
-      cloudinary.uploader.upload(filePath, { folder: 'profiles' }, (error, result) => {
+      cloudinary.uploader.upload(filePath, { folder: 'dumpPics'||req.folder }, (error, result) => {
         // Delete the file after upload
         // fs.unlink(filePath, (err) => {
         //   if (err) console.error('Failed to delete temporary file:', err);

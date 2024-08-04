@@ -39,7 +39,6 @@ app.use(passport.session());
 passport.use(LocalStrategy)
 passport.use(GoogleStrategy)
 //
-
 //
 // demonstrating the session creation
 app.use((req,res,next)=>{

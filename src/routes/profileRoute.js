@@ -1,5 +1,5 @@
 const express=require("express")
-const {getAllProfiles,createProfile,getProfileById,deleteProfile,updateProfile}=require("../controllers/profileController.js")
+const {getAllProfiles,createProfile,getProfileById,deleteProfile,updateProfile,updateTheCurrentlySessionedProfile}=require("../controllers/profileController.js")
 const {signup,login}=require('../controllers/authControllers.js')
 const {authenticateRequest,authenticateWithToken,resetPassword}=require("../controllers/authControllers.js")
 const {sendMail}=require("../controllers/communicationController.js")
@@ -18,9 +18,7 @@ router.route("/authWithGoogle").get(passport.authenticate("google",{
     res.send("redirecting to google for the authenticating")
 })
 router.route("/resetPassword").post(resetPassword)
-router.route("/uploadCurrentlySessionedProfile").post((req,res,next)=>{req.typeMime=["images"];next()},uploadLocal.array("images",6),storeToCloudinary,(req,res)=>{
-    console.log(req.fileObjs)
-})
+router.route("/uploadCurrentlySessionedProfile").post((req,res,next)=>{req.typeMime=["images"];req.folder="profiles";next()},uploadLocal.array("images",6),storeToCloudinary,updateTheCurrentlySessionedProfile)
 router.route('/:id').get(getProfileById).delete(deleteProfile).patch(updateProfile)
 router.route('/').get(authenticateRequest,getAllProfiles).post(createProfile)
 
