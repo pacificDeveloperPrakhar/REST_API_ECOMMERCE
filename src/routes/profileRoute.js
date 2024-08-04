@@ -18,7 +18,7 @@ router.route("/authWithGoogle").get(passport.authenticate("google",{
     res.send("redirecting to google for the authenticating")
 })
 router.route("/resetPassword").post(resetPassword)
-router.route("/uploadCurrentlySessionedProfile").post((req,res,next)=>{req.typeMime=["images"];req.folder="profiles";next()},uploadLocal.array("images",6),storeToCloudinary,updateTheCurrentlySessionedProfile)
+router.route("/uploadCurrentlySessionedProfile").post((req,res,next)=>{req.typeMime=["images"];req.folder='profiles';next()},uploadLocal.array("images",6),storeToCloudinary,updateTheCurrentlySessionedProfile)
 router.route('/:id').get(getProfileById).delete(deleteProfile).patch(updateProfile)
 router.route('/').get(authenticateRequest,getAllProfiles).post(createProfile)
 

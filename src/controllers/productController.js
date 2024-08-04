@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const Product = require('../models/product.js');
 const catchAsync = require('../utils/catchAsync.js');
-const APIFeatures=require('../utils/APIFeatures.js')
+const APIFeatures=require('../utils/APIFeatures.js');
+const appError = require('../utils/appErrors.js');
 
 // Controller to get all products
 exports.getAllProducts = catchAsync(async function (req, res, next) {
@@ -82,3 +83,26 @@ exports.deleteProduct = catchAsync(async function (req, res, next) {
     data: product
   });
 });
+
+exports.updateTheProductImages=catchAsync(async function(req,res,next){
+  const {productId}=req.params;
+  if(!productId)
+    return next(new appError("no product is was given",400))
+  const urls=req.fileObjs?.map(({url})=>url)
+  iconURL=urls[0]
+  previewsURLs=urls
+  const product=await Profile.findByIdAndUpdate(productId,{
+    images:{
+      iconURL,
+      previewsURLs
+    }
+  },{
+    new:true
+  })
+  res.status(201).json({
+    status:"updated",
+    data:{
+      product 
+    }
+  })
+})
