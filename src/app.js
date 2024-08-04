@@ -47,10 +47,6 @@ app.use((req,res,next)=>{
 })
 //
 app.use(Express.json({ limit: "30kb" }));
-app.use('',(req,res,next)=>{
-  console.log(req.query)
-  next()
-})
 app.use('/api/v1/develop',developmentRoute)
 app.use('/api/v1/profiles',profileRoute);
 app.use('/api/v1/products',productRoute);
