@@ -1,0 +1,158 @@
+[
+    {
+      "name": "Apple iPhone 14",
+      "description": "The latest iPhone with advanced features and improved performance.",
+      "images": {
+        "iconURL": "https://example.com/images/iphone14.png"
+      },
+      "price": 999.99,
+      "stock": {
+        "soldQty": 0,
+        "recentAddedAt": "2024-07-28T00:00:00.000Z"
+      }
+    },
+    {
+      "name": "Samsung Galaxy S22",
+      "description": "High-end smartphone with cutting-edge technology and sleek design.",
+      "images": {
+        "iconURL": "https://example.com/images/galaxys22.png"
+      },
+      "price": 849.99,
+      "stock": {
+        "soldQty": 0,
+        "recentAddedAt": "2024-07-28T00:00:00.000Z"
+      }
+    },
+    {
+      "name": "Sony WH-1000XM4",
+      "description": "Industry-leading noise-canceling wireless headphones.",
+      "images": {
+        "iconURL": "https://example.com/images/sonywh1000xm4.png"
+      },
+      "price": 349.99,
+      "stock": {
+        "soldQty": 0,
+        "recentAddedAt": "2024-07-28T00:00:00.000Z"
+      }
+    },
+    {
+      "name": "Nintendo Switch",
+      "description": "Versatile gaming console for home and on-the-go play.",
+      "images": {
+        "iconURL": "https://example.com/images/nintendoswitch.png"
+      },
+      "price": 299.99,
+      "stock": {
+        "soldQty": 0,
+        "recentAddedAt": "2024-07-28T00:00:00.000Z"
+      }
+    },
+    {
+      "name": "Dyson V11 Vacuum Cleaner",
+      "description": "Powerful and intelligent cordless vacuum cleaner.",
+      "images": {
+        "iconURL": "https://example.com/images/dysonv11.png"
+      },
+      "price": 599.99,
+      "stock": {
+        "soldQty": 0,
+        "recentAddedAt": "2024-07-28T00:00:00.000Z"
+      }
+    },
+    {
+      "name": "Apple MacBook Pro 16",
+      "description": "High-performance laptop with M1 Pro chip.",
+      "images": {
+        "iconURL": "https://example.com/images/macbookpro16.png"
+      },
+      "price": 2499.99,
+      "stock": {
+        "soldQty": 0,
+        "recentAddedAt": "2024-07-28T00:00:00.000Z"
+      }
+    },
+    {
+      "name": "Bose QuietComfort 35 II",
+      "description": "Wireless Bluetooth headphones with noise-canceling technology.",
+      "images": {
+        "iconURL": "https://example.com/images/boseqc35.png"
+      },
+      "price": 299.99,
+      "stock": {
+        "soldQty": 0,
+        "recentAddedAt": "2024-07-28T00:00:00.000Z"
+      }
+    },
+    {
+      "name": "Fitbit Charge 5",
+      "description": "Advanced fitness and health tracker with built-in GPS.",
+      "images": {
+        "iconURL": "https://example.com/images/fitbitcharge5.png"
+      },
+      "price": 179.99,
+      "stock": {
+        "soldQty": 0,
+        "recentAddedAt": "2024-07-28T00:00:00.000Z"
+      }
+    },
+    {
+      "name": "GoPro HERO9 Black",
+      "description": "Waterproof action camera with 5K video and 20MP photos.",
+      "images": {
+        "iconURL": "https://example.com/images/goprohero9.png"
+      },
+      "price": 399.99,
+      "stock": {
+        "soldQty": 0,
+        "recentAddedAt": "2024-07-28T00:00:00.000Z"
+      }
+    },
+    {
+      "name": "Amazon Echo Dot (4th Gen)",
+      "description": "Smart speaker with Alexa for hands-free control.",
+      "images": {
+        "iconURL": "https://example.com/images/echodot4.png"
+      },
+      "price": 49.99,
+      "stock": {
+        "soldQty": 0,
+        "recentAddedAt": "2024-07-28T00:00:00.000Z"
+      }
+    },
+    {
+      "name": "Logitech MX Master 3",
+      "description": "Advanced wireless mouse with ergonomic design.",
+      "images": {
+        "iconURL": "https://example.com/images/mxmaster3.png"
+      },
+      "price": 99.99,
+      "stock": {
+        "soldQty": 0,
+        "recentAddedAt": "2024-07-28T00:00:00.000Z"
+      }
+    },
+    {
+      "name": "Samsung QLED 4K Smart TV",
+      "description": "High-definition smart TV with vibrant colors and detailed clarity.",
+      "images": {
+        "iconURL": "https://example.com/images/samsungqled.png"
+      },
+      "price": 1199.99,
+      "stock": {
+        "soldQty": 0,
+        "recentAddedAt": "2024-07-28T00:00:00.000Z"
+      }
+    },
+    {
+      "name": "Instant Pot Duo 7-in-1",
+      "description": "Multifunctional electric pressure cooker with seven cooking modes.",
+      "images": {
+        "iconURL": "https://example.com/images/instantpot.png"
+      },
+      "price": 89.99,
+      "stock": {
+        "soldQty": 0,
+        "recentAddedAt": "2024-07-28T00:00:00.000Z"
+      }
+    }
+]
