@@ -11,6 +11,7 @@ const MongoStore = require('connect-mongo');
 const {LocalStrategy}=require("./controllers/thirdpartyAuthControllers")
 const {colorRed,colorReset}=require("./utils/color_codes");
 const { GoogleStrategy } = require("./controllers/thirdpartyAuthControllers.js");
+const reviewRoute=require("./routes/reviewRoute.js")
 const app = Express();
 //
 //here is the session middleware
@@ -56,6 +57,7 @@ app.use((req,res,next)=>{
 })
 //
 app.use(Express.json({ limit: "30kb" }));
+app.use('/api/v1/reviews',reviewRoute)
 app.use('/api/v1/develop',developmentRoute)
 app.use('/api/v1/profiles',profileRoute);
 app.use('/api/v1/products',productRoute);

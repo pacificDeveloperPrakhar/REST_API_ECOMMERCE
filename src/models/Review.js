@@ -1,7 +1,7 @@
-//Review Schema
-;
-const mongoose=require("mongoose")
+const mongoose = require("mongoose");
+const AppError = require("../utils/appErrors");
 const Schema = mongoose.Schema;
+
 const ReviewSchema = new Schema(
   {
     user: {
@@ -24,11 +24,27 @@ const ReviewSchema = new Schema(
       min: 1,
       max: 5,
     },
+    uniqueFactor: {
+      type: String,
+      unique: true, // Ensure the index is created
+    },
   },
   {
     timestamps: true,
   }
 );
+ReviewSchema.index({ uniqueFactor: 1 }, { unique: true });
+ReviewSchema.pre("validate", function (next) {
+  const productId = this.product.toString();
+  const userId = this.user.toString();
+
+  if (!userId || !productId) {
+    return next(new AppError("No user ID or product ID was found", 400));
+  }
+
+  this.uniqueFactor = `${userId}_${productId}`;
+  next();
+});
 
 const Review = mongoose.model("Review", ReviewSchema);
 
