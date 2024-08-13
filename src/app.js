@@ -11,6 +11,7 @@ const MongoStore = require('connect-mongo');
 const {LocalStrategy}=require("./controllers/thirdpartyAuthControllers")
 const {colorRed,colorReset}=require("./utils/color_codes");
 const { GoogleStrategy } = require("./controllers/thirdpartyAuthControllers.js");
+const cartRoutes=require("./routes/cartRoutes.js")
 const reviewRoute=require("./routes/reviewRoute.js")
 const app = Express();
 //
@@ -61,6 +62,7 @@ app.use('/api/v1/reviews',reviewRoute)
 app.use('/api/v1/develop',developmentRoute)
 app.use('/api/v1/profiles',profileRoute);
 app.use('/api/v1/products',productRoute);
+app.use('/api/v1/carts',cartRoutes);
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(err.status || 500).json({

@@ -54,8 +54,9 @@ const productSchema = new Schema({
       required: [true, 'Sold quantity is required'],
       default: 0
     },
-    stockAvailaibleQty: {
-      type: Number
+    stockAvailabilityQty: {
+      type: Number,
+      default:0
     },
     recentAddedAt: {
       type: Date,

@@ -14,13 +14,13 @@ exports.signup = catchAsync(async function (req, res, next) {
   
     // Generate JWT token
     const token = jwt.sign({ email, first_name }, privateKey);
-  
     // Create a new profile
     const profile = await profiles.create({ first_name, email, password, confirmPassword });
     // preparing the data for the next middleware
     req.profile=profile
     req.token=token
     req.isSignup=true
+    req.session.userId=profile._id
     next()
   });
 // issuing token and storing that inside the session storage
@@ -247,5 +247,5 @@ exports.isEmailVerified=catchAsync(async function(req,res,next){
 })
 
 exports.signiningUpAsAdmin=catchAsync(function(req,res,next){
-  
+
 })
