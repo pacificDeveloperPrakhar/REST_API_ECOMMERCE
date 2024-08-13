@@ -245,3 +245,7 @@ exports.authenticateVerification=catchAsync(async function(req,res,next){
 exports.isEmailVerified=catchAsync(async function(req,res,next){
   const profile=profiles.find
 })
+
+exports.signiningUpAsAdmin=catchAsync(function(req,res,next){
+  
+})
