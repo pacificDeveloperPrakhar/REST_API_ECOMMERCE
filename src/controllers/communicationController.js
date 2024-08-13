@@ -93,13 +93,23 @@ exports.sendWhatsappMssg = catchAsync(async (req, res, next) => {
       });
     });
   });
-
+  const fs = require('fs');
+  const path = require('path');
+  
+  // Your sendMail function
   exports.sendMail = catchAsync(async (req, res, next) => {
     // Check for required fields and throw an error if they are missing
-    console.log(req.body)
-    if (!req.body.to || !req.body.from || !req.body.subject) {
-      return next(new AppError('Missing required fields: to, from, or subject', 400));
+    console.log(req.body);
+    if (!req.body.to || !req.body.from || !req.body.subject || !req.body.url) {
+      return next(new AppError('Missing required fields: to, from, subject, or URL', 400));
     }
+  
+    // Read the email template from a file
+    const filePath = path.join(__dirname,"../","../", 'public','emailView.html'); // Adjust the file path as needed
+    let emailContent = fs.readFileSync(filePath, 'utf-8');
+  
+    // Replace the placeholder %URL% with the actual URL from req.body.url
+    emailContent = emailContent.replace(/%URL%/g, req.body.url);
   
     // Create a transporter object using the Mailtrap service
     const transporter = nodemailer.createTransport({
@@ -111,13 +121,12 @@ exports.sendWhatsappMssg = catchAsync(async (req, res, next) => {
       }
     });
   
-    // Define the email options
+    // Define the email options with the modified HTML content
     const mailOptions = {
       from: req.body.from, // Sender address
       to: req.body.to, // List of recipients
       subject: req.body.subject, // Subject line
-      text: req.body.text || '', // Plain text body, set to empty string if not provided
-      html: req.body.html || '' // HTML body, set to empty string if not provided
+      html: emailContent // HTML body from the file
     };
   
     // Send the email
@@ -129,7 +138,7 @@ exports.sendWhatsappMssg = catchAsync(async (req, res, next) => {
       console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
   
       res.status(200).json({
-        message: `Reset token has been sent to ${req.body.to}`
+        message: !req.isSignup?`Reset token has been sent to ${req.body.to}`:`to verify your email check the mail send to ${req.body.to}`
       });
     });
   });

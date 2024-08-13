@@ -12,7 +12,7 @@ const VerificationFactorSchema = new Schema(
     // OTP code generated
     value: {
       type: String,
-      required: [true, 'must contain an OTP code generated'], // Custom error message if not provided
+      required: [true, 'must contain an token code generated'], // Custom error message if not provided
     },
     // Date when the OTP was created
     createdAt: {

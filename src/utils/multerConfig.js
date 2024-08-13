@@ -4,7 +4,7 @@ const path=require("path")
 // storing the file logic
 const storage=multer.diskStorage({
     destination:(req,file,cb)=>{
-        return cb(null,`public/${"dumpPics"||req.folder}`)
+        return cb(null,`public/images/${"dumpPics"||req.folder}`)
     },
     filename:(req,file,cb)=>{
         

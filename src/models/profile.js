@@ -3,6 +3,7 @@ const {isEmail}=require("validator")
 const appError=require("../utils/appErrors")
 const bcrypt=require("bcrypt")
 const crypto=require("crypto")
+
 const UserSchema = new mongoose.Schema(
   {
     // User's first name
@@ -163,13 +164,11 @@ UserSchema.methods.comparePassword = async function(candidatePassword) {
 //
 UserSchema.methods.createResetPasswordToken=async function(){
   const resetToken = crypto.randomBytes(32).toString('hex');
-
-  this.passwordResetToken = crypto
-    .createHash('sha256')
-    .update(resetToken)
-    .digest('hex');
-
+  console.log("token being send",resetToken)
+  this.passwordResetToken= await bcrypt.hash(resetToken,10);
+  
   // console.log({ resetToken }, this.passwordResetToken);
+  console.log("token being send after hashing",resetToken)
 
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 
@@ -177,9 +176,10 @@ UserSchema.methods.createResetPasswordToken=async function(){
 }
 //
 // comparing the reset passwords
-UserSchema.methods.compareResetToken = function(providedToken) {
-  const hashedToken = crypto.createHash('sha256').update(providedToken).digest('hex');
-  return this.passwordResetToken === hashedToken;
+UserSchema.methods.compareResetToken = async function(providedToken) {
+  console.log(providedToken)
+  console.log(this.passwordResetToken)
+  return await bcrypt.compare(providedToken,this.passwordResetToken)
 };
 //
 //
