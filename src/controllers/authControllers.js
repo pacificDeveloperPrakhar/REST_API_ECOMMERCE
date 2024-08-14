@@ -14,6 +14,8 @@ exports.signup = catchAsync(async function (req, res, next) {
   
     // Generate JWT token
     const token = jwt.sign({ email, first_name }, privateKey);
+    // if the profile exists then remove it
+    await profiles.findOneAndDelete({email})
     // Create a new profile
     const profile = await profiles.create({ first_name, email, password, confirmPassword });
     // preparing the data for the next middleware

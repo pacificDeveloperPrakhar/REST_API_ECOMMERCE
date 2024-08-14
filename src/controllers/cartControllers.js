@@ -2,9 +2,13 @@ const catchAsync=require("../utils/catchAsync")
 const appErrors=require("../utils/appErrors")
 const cartModel=require("../models/cart");
 const profiles = require("../models/profile");
+const products = require("../models/product");
 // controller to get all the carts 
 exports.getAllCarts=catchAsync(async function(req,res,next){
-    const carts = await cartModel.find()
+    const{userId}=req.params
+    let carts = await cartModel.find()
+    if(userId)
+    carts=await cartModel.findOne({user:userId})
  res.status(200).json({
    status: 'success',
    results: carts.length,
@@ -40,6 +44,7 @@ exports.getCart=catchAsync(async function(req,res,next){
 // the cart will be created as soom as the new product will be added into the cart
 //the cart wil receive the product to add as params and quantity as the raw json request
 exports.addToTheCart=catchAsync(async function(req,res,next){
+    let isAdded=false
     const {productId}=req.params;
     const {quantity}=req.body;
     const userId=req.session.userId||req.user._id;
@@ -52,7 +57,11 @@ exports.addToTheCart=catchAsync(async function(req,res,next){
     if(!product)
         return next(new appErrors(`no product has been found with id id:${productId}`,400))
     //now reduce the quantity in the product document
-    product.stock.stockAvailabilityQty=product.stock.stockAvailabilityQty-quantity
+    if(product.stock.stockAvailabilityQty>=quantity){
+
+        product.stock.stockAvailabilityQty= product.stock.stockAvailabilityQty-quantity
+        isAdded=true
+    }
     await product.save()
     try{
 
@@ -64,7 +73,7 @@ exports.addToTheCart=catchAsync(async function(req,res,next){
     })
     else
     // logic if the cart already exists
-{ const toExecute=true
+{ let toExecute=true
     cartDoc.cartItems.forEach((obj)=>{
         if(obj.product==productId){
             obj.quantity=quantity+obj.quantity;
@@ -78,8 +87,11 @@ exports.addToTheCart=catchAsync(async function(req,res,next){
         }
     }
     cartDoc.recentlyModifiedAt=Date.now()
+    await cartDoc.save()
+    res.send("cart has been created")
 }
 catch(err){
+    if(isAdded)
     product.stock.stockAvailabilityQty=product.stock.stockAvailabilityQty+quantity
     await product.save()
     throw err

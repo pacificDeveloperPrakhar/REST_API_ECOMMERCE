@@ -1,6 +1,7 @@
 const express=require("express")
 const {getAllProfiles,createProfile,getProfileById,deleteProfile,updateProfile,updateTheCurrentlySessionedProfile}=require("../controllers/profileController.js")
 const {signup,login}=require('../controllers/authControllers.js')
+const cartRoutes=require("../routes/cartRoutes.js")
 const {authenticateRequest,authenticateWithToken,resetPassword,tokenGenerator,authenticateVerification,issueToken}=require("../controllers/authControllers.js")
 const {sendMail}=require("../controllers/communicationController.js")
 const passport = require("passport")
@@ -21,6 +22,7 @@ router.route("/authWithGoogle").get(passport.authenticate("google",{
 router.route("/resetPassword").post(resetPassword)
 router.route("/uploadCurrentlySessionedProfile").post((req,res,next)=>{req.typeMime=["images"];req.folder='profiles';next()},uploadLocal.array("images",6),storeToCloudinary,updateTheCurrentlySessionedProfile)
 router.route('/:id').get(getProfileById).delete(deleteProfile).patch(updateProfile)
+router.use('/:userId/carts',cartRoutes)
 router.route('/').get(authenticateRequest,getAllProfiles).post(createProfile)
 
 module.exports=router
